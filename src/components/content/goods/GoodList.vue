@@ -1,23 +1,21 @@
 <template>
   <div class="goods">
-    <ul>
-      <li>jjjj1</li>
-      <li>jjjj2</li>
-      <li>jjjj3</li>
-      <li>jjjj4</li>
-      <li>jjjj5</li>
-      <li>jjjj6</li>
-      <li>jjjj7</li>
-      <li>jjjj8</li>
-      <li>jjjj9</li>
-      <li>jjjj10</li>
-    </ul>
+    <goods-list-item v-for="(item, id) in goods" :key="id" :goodsItem="item"/>
   </div>
 </template>
 
 <script>
+import GoodsListItem from './GoodsListItem.vue'
 export default {
-
+  components: { GoodsListItem },
+  props: {
+    goods: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  }
 }
 </script>
 

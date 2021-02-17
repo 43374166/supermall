@@ -8,7 +8,7 @@
     <feature-view />
     <tab-control class="tab-control"
     :titles="['流行', '新款', '精选']" />
-    <good-list />
+    <good-list :goods="goods['pop'].list"/>
 
     <ul>
       <li>hhh</li>
