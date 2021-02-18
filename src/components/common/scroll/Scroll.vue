@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" ref="wrapper">
     <div class="content">
       <slot></slot>
     </div>
@@ -7,11 +7,22 @@
 </template>
 
 <script>
-export default {
+import BScroll from 'better-scroll'
 
+export default {
+  data() {
+    return {
+      scroll: null
+    }
+  },
+  mounted() {
+    this.scroll = new BScroll(this.$refs.wrapper, {
+      
+    })
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

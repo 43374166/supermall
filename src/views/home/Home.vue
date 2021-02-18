@@ -1,9 +1,7 @@
 <template>
   <div id="home">
-    <nav-bar class="home-nav">
-      <div slot="center">购物街</div>
-    </nav-bar>
-    <scroll>
+    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <scroll class="content">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view />
@@ -19,7 +17,7 @@
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodList from 'components/content/goods/GoodList'
-import Scroll from 'components/common/scroll/scroll.vue'
+import Scroll from 'components/common/scroll/Scroll'
 
 import HomeSwiper from './Childcomps/HomeSwiper'
 import RecommendView from './Childcomps/RecommendView'
@@ -102,9 +100,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #home {
-    padding-top: 44px;
+    /* padding-top: 44px; */
     height: 100vh;
     position: relative;
   }
@@ -122,7 +120,17 @@ export default {
 
   .tab-control {
     position: sticky;
-    top: 44px;
+    top: 43px;
     z-index: 9;
+  }
+
+  .content {
+    position: absolute;
+    overflow: hidden;
+
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 </style>
