@@ -3,20 +3,23 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view />
-    <tab-control class="tab-control"
-    :titles="['流行', '新款', '精选']"
-    @tabClick="tabClick" />
-    <good-list :goods="showGoods"/>
+    <scroll>
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view />
+      <tab-control class="tab-control"
+                  :titles="['流行', '新款', '精选']"
+                  @tabClick="tabClick" />
+      <good-list :goods="showGoods"/>
+    </scroll>
   </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
-import GoodList from 'components/content/goods/GoodList.vue'
+import GoodList from 'components/content/goods/GoodList'
+import Scroll from 'components/common/scroll/scroll.vue'
 
 import HomeSwiper from './Childcomps/HomeSwiper'
 import RecommendView from './Childcomps/RecommendView'
@@ -30,6 +33,7 @@ export default {
     NavBar,
     TabControl,
     GoodList,
+    Scroll,
     HomeSwiper,
     RecommendView,
     FeatureView
