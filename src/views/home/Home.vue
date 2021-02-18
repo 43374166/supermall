@@ -1,7 +1,10 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content">
+    <scroll class="wrapper"
+            ref="scroll"
+            :probe-type="3"
+            @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view />
@@ -10,6 +13,7 @@
                   @tabClick="tabClick" />
       <good-list :goods="showGoods"/>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -18,6 +22,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodList from 'components/content/goods/GoodList'
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop.vue'
 
 import HomeSwiper from './Childcomps/HomeSwiper'
 import RecommendView from './Childcomps/RecommendView'
@@ -26,17 +31,19 @@ import FeatureView from './Childcomps/FeatureView'
 import {getHomeMultidata, getHomeGoods} from 'network/home'
 
 
+
 export default {
   components: { 
     NavBar,
     TabControl,
     GoodList,
     Scroll,
+    BackTop,
     HomeSwiper,
     RecommendView,
     FeatureView
-
   },
+
   data() {
     return {
       banners: [],
@@ -46,9 +53,11 @@ export default {
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []}
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShowBackTop: false
     }
   },
+
   created() {
     // 请求多个数据
     this.getHomeMultidata()
@@ -58,11 +67,13 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+
   computed: {
     showGoods() {
       return this.goods[this.currentType].list
     }
   },
+
   methods: {
     // 监听事件
     tabClick(index) {
@@ -77,6 +88,13 @@ export default {
           this.currentType = 'sell'
       }
     },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
+    contentScroll(position) {
+      this.isShowBackTop = (-position.y) > 800
+    },
+
 
 
     // 网络请求
@@ -102,7 +120,7 @@ export default {
 
 <style scoped>
   #home {
-    /* padding-top: 44px; */
+    padding-top: 44px;
     height: 100vh;
     position: relative;
   }
@@ -124,7 +142,7 @@ export default {
     z-index: 9;
   }
 
-  .content {
+  .wrapper {
     position: absolute;
     overflow: hidden;
 

@@ -36,15 +36,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .tab-bar-item {
     flex: 1;
     text-align: center;
     height: 49px;
     font-size: 14px;
+    margin: 0px 0;
   }
 
   .tab-bar-item img {
     width: 24px;
+    margin-top: 3px;
   }
 </style>

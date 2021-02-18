@@ -7,9 +7,18 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import BScroll from '@better-scroll/core'
+import ObserveDom  from '@better-scroll/observe-dom'
+BScroll.use(ObserveDom)
 
 export default {
+  props: {
+    probeType: {
+      type: Number,
+      default: 0
+    },
+
+  },
   data() {
     return {
       scroll: null
@@ -17,8 +26,18 @@ export default {
   },
   mounted() {
     this.scroll = new BScroll(this.$refs.wrapper, {
-      
+      observeDOM: true,
+      probeType: this.probeType,
+
     })
+    this.scroll.on('scroll', position => {
+      this.$emit('scroll', position)
+    })
+  },
+  methods: {
+    scrollTo(x, y, time = 500) {
+      this.scroll.scrollTo(x, y, time)
+    }
   }
 }
 </script>
