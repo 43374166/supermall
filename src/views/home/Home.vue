@@ -4,7 +4,9 @@
     <scroll class="wrapper"
             ref="scroll"
             :probe-type="3"
-            @scroll="contentScroll">
+            @scroll="contentScroll"
+            :pull-up-load="true"
+            @pullingUP="loadMore">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view />
@@ -94,6 +96,10 @@ export default {
     contentScroll(position) {
       this.isShowBackTop = (-position.y) > 800
     },
+    loadMore() {
+      this.getHomeGoods(this.currentType)
+      // console.log('sahngla');
+    },
 
 
 
@@ -112,6 +118,8 @@ export default {
         // console.log(res);
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+
+        this.$refs.scroll.finishPullUp()
       })
     }
   }
