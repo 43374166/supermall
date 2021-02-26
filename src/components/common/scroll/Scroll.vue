@@ -55,7 +55,7 @@ export default {
       // 监听照片是否加载完成
       // observeImage: true,
       // 设置滚动时不模糊
-      // useTransition: false
+      useTransition: false
     })
 
     // 监听移动位置
@@ -76,13 +76,14 @@ export default {
   },
   methods: {
     scrollTo(x, y, time = 500) {
-      this.scroll.scrollTo(x, y, time)
+      this.scroll && this.scroll.scrollTo(x, y, time)
     },
     finishPullUp() {
-      this.scroll.finishPullUp()
+      this.scroll && this.scroll.finishPullUp()
     },
     refresh() {
-      this.scroll.refresh()
+      this.scroll && this.scroll.refresh()
+      // console.log('');
     }
   }
 }

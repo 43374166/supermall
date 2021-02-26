@@ -68,10 +68,17 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
+  },
+
+  mounted() {
+    const refresh = this.debounce(this.$refs.scroll && this.$refs.scroll.refresh, 200)
 
     // 监听goods里面照片的加载完成
     this.$bus.$on('itemImageLoad', () => {
-      this.$refs.scroll.refresh()
+      // this.$refs.scroll && this.$refs.scroll.refresh() 保证能拿到scroll
+      // this.$refs.scroll && this.$refs.scroll.refresh()
+      refresh()
+      // console.log('////');
     })
   },
 
@@ -83,6 +90,7 @@ export default {
 
   methods: {
     // 监听事件
+    // 点击切换tab
     tabClick(index) {
       switch(index) {
         case 0:
@@ -95,17 +103,28 @@ export default {
           this.currentType = 'sell'
       }
     },
+    // 返回顶部函数
     backClick() {
       this.$refs.scroll.scrollTo(0, 0)
     },
+    // 监听返回顶部图标函数
     contentScroll(position) {
       this.isShowBackTop = (-position.y) > 800
     },
+    // 加载更多函数
     loadMore() {
       this.getHomeGoods(this.currentType)
-      // console.log('sahngla');
+    },
+    // 防抖函数的封装
+    debounce(func, delay) {
+      let timer = null
 
-      // this.$refs.scroll.refinish()
+      return function(...args) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        },delay)
+      }
     },
 
 
