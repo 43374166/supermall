@@ -64,10 +64,15 @@ export default {
     // 请求多个数据
     this.getHomeMultidata()
     
-    //请求商品数据
+    // 请求商品数据
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
+
+    // 监听goods里面照片的加载完成
+    this.$bus.$on('itemImageLoad', () => {
+      this.$refs.scroll.refresh()
+    })
   },
 
   computed: {
