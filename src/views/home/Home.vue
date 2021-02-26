@@ -99,6 +99,8 @@ export default {
     loadMore() {
       this.getHomeGoods(this.currentType)
       // console.log('sahngla');
+
+      // this.$refs.scroll.refinish()
     },
 
 
