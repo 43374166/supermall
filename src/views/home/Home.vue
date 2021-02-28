@@ -7,12 +7,13 @@
             @scroll="contentScroll"
             :pull-up-load="true"
             @pullingUP="loadMore">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners"
+                    @swiperImageLoad="swiperLoadFinish" />
       <recommend-view :recommends="recommends"/>
       <feature-view />
-      <tab-control class="tab-control"
-                  :titles="['流行', '新款', '精选']"
-                  @tabClick="tabClick" />
+      <tab-control :titles="['流行', '新款', '精选']"
+                   @tabClick="tabClick" 
+                   ref="tabControl"/>
       <good-list :goods="showGoods"/>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"/>
@@ -31,6 +32,7 @@ import RecommendView from './Childcomps/RecommendView'
 import FeatureView from './Childcomps/FeatureView'
 
 import {getHomeMultidata, getHomeGoods} from 'network/home'
+import {debounce} from 'common/utils'
 
 
 
@@ -56,7 +58,8 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0
     }
   },
 
@@ -71,15 +74,15 @@ export default {
   },
 
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll && this.$refs.scroll.refresh, 200)
-
     // 监听goods里面照片的加载完成
+    const refresh = debounce(this.$refs.scroll && this.$refs.scroll.refresh, 200)
     this.$bus.$on('itemImageLoad', () => {
-      // this.$refs.scroll && this.$refs.scroll.refresh() 保证能拿到scroll
-      // this.$refs.scroll && this.$refs.scroll.refresh()
       refresh()
-      // console.log('////');
     })
+
+    // 获取tabControl的offsetTop
+    this.tabOffsetTop = this.$refs.tabControl.$el
+    
   },
 
   computed: {
@@ -115,18 +118,11 @@ export default {
     loadMore() {
       this.getHomeGoods(this.currentType)
     },
-    // 防抖函数的封装
-    debounce(func, delay) {
-      let timer = null
+    // 防抖函数的封装封装到common文件里面
 
-      return function(...args) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        },delay)
-      }
+    swiperLoadFinish() {
+      console.log(this.$refs.tabControl.$el.offsetTop);
     },
-
 
 
     // 网络请求
@@ -145,6 +141,7 @@ export default {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
 
+        // 因为scroll这个工具默认最多只是加载一次 所以需要调用finishPullUp函数
         this.$refs.scroll.finishPullUp()
       })
     }
@@ -170,12 +167,6 @@ export default {
     z-index: 9;
   }
 
-  .tab-control {
-    position: sticky;
-    top: 43px;
-    z-index: 9;
-  }
-
   .wrapper {
     position: absolute;
     overflow: hidden;
@@ -184,5 +175,9 @@ export default {
     bottom: 49px;
     left: 0;
     right: 0;
+  }
+
+  .active {
+    position: fixed;
   }
 </style>

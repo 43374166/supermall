@@ -59,13 +59,19 @@ export default {
     })
 
     // 监听移动位置
-    this.scroll.on('scroll', position => {
-      this.$emit('scroll', position)
-    })
+    if(this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on('scroll', position => {
+        this.$emit('scroll', position)
+      })
+    }
+    
     // 监听上拉更多
-    this.scroll.on('pullingUp', () => {
-      this.$emit('pullingUP')  
-    })
+    if(this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullingUP')  
+      })
+    }
+    
     // 监听下拉更新
     this.scroll.on('pullingDown', () => {
       // console.log('下拉刷新');
@@ -83,7 +89,7 @@ export default {
     },
     refresh() {
       this.scroll && this.scroll.refresh()
-      // console.log('');
+      // console.log('..');
     }
   }
 }
