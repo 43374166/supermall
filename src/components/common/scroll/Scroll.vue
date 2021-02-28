@@ -90,6 +90,9 @@ export default {
     refresh() {
       this.scroll && this.scroll.refresh()
       // console.log('..');
+    },
+    getScrollY() {
+      return this.scroll ? this.scroll.y : this.scroll.y
     }
   }
 }
